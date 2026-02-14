@@ -1,0 +1,39 @@
+# --- Python General ---
+__pycache__/
+*.py[cod]
+*$py.class
+get-pip.py
+
+# --- Entorno Virtual (CRÍTICO: Nunca subir esto) ---
+venv/
+env/
+.env
+
+# --- Variables de Entorno y Secretos (SEGURIDAD) ---
+.env
+.env.local
+client_secrets.json
+credentials.json
+google_auth_conf.json
+
+# --- Base de Datos (Persistencia Local) ---
+*.db
+*.sqlite3
+*.sqlite
+
+# --- Logs y Archivos de Sistema ---
+*.log
+gunicorn_error.log
+access.log
+
+# --- IDEs (Configuraciones de editor) ---
+.vscode/
+.idea/
+
+# --- Scrapping & Temporales ---
+# Sesiones de Instaloader (Contienen cookies de tu cuenta)
+session-*
+# Cache de navegadores de Playwright/Selenium
+.cache/
+downloads/
+__downloads__/
