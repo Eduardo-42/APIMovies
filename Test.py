@@ -16,11 +16,17 @@ Base.metadata.create_all(engine)
 
 @app.route('/movies/bulk', methods=['POST'])
 def bulk_insert():
-    # Recibimos el array de películas desde el cliente
+
     data = request.json 
     
     if not data or not isinstance(data, list):
         return jsonify({"error": "Se esperaba un array de datos"}), 400
+    
+    for indice, peli in enumerate(data):
+        if not 'id' in peli:
+            return jsonify({
+                "error": f"Error en el elemento {indice}: No se encontro elemento id en el payload"
+            }), 400
 
     session = Session()
     try:
