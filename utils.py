@@ -40,7 +40,7 @@ def SearchMovieByIdAndImg(IDMBId, imageSize):
   base64String = base64Bytes.decode('utf-8')
 
   if ',' in base64String:
-      header, encoded_data = base64String.split(',', 1)
+      headers, encoded_data = base64String.split(',', 1)
   else:
       encoded_data = base64String
 
@@ -50,7 +50,7 @@ def SearchMovieByIdAndImg(IDMBId, imageSize):
 
   if imageSize:
     ancho_original, alto_original = img.size
-    # Si la imagen ya es más pequeña que el ancho deseado, no la agrandamos
+   
   if ancho_original > imageSize:
     ratio = alto_original / ancho_original
     nuevo_alto = int(imageSize * ratio)
