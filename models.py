@@ -7,7 +7,7 @@ Base = declarative_base()
 class Movies(Base):
         __tablename__ = 'Movies'
         
-        id = Column(Integer, primary_key=True)
+        id = Column(String, primary_key=True)
         titulo = Column(String(100), nullable=False)
         generos = Column(String(250))
         rate = Column(Numeric(precision=10, scale=2), nullable=False)

@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Movies
+from utils import searchMovieByTitle, SearchMovieByIdAndImg
 
 
 fileName = './instance/Movies.db'
@@ -14,7 +15,7 @@ Session = sessionmaker(bind=engine)
 # Creamos las tablas al iniciar (si no existen)
 Base.metadata.create_all(engine)
 
-@app.route('/movies/bulk', methods=['POST'])
+@app.route('/movies/load', methods=['POST'])
 def bulk_insert():
 
     data = request.json 
@@ -30,11 +31,31 @@ def bulk_insert():
 
     session = Session()
     try:
-        # Mapeamos el array a objetos Movie
-        nuevas_peliculas = [Movies(**peli) for peli in data]
-        session.add_all(nuevas_peliculas)
-        session.commit()
-        return jsonify({"mensaje": f"Se insertaron {len(nuevas_peliculas)} peliculas"}), 201
+        for indice, peli  in enumerate(data):
+            
+            nuevas_peliculas = SearchMovieByIdAndImg(peli.get('id'),200)
+            
+            generos_Array = nuevas_peliculas['Generos']
+
+            
+
+            pelicula_dict = {
+                "id": peli.get('id'),
+                "titulo": nuevas_peliculas.get('Titulo'),
+                "generos": ", ".join(generos_Array),
+                "rate": nuevas_peliculas.get('Rate'),
+                "year": nuevas_peliculas.get('Year'),
+                "summary": nuevas_peliculas.get('Summ'),
+                "director":nuevas_peliculas.get('Director'),
+                "image":nuevas_peliculas.get('Img')}
+            
+            
+
+            nueva_peli_objeto = Movies(**pelicula_dict)
+
+            session.add(nueva_peli_objeto)
+            session.commit()
+            return jsonify({"mensaje": f"{nuevas_peliculas}"}), 201
     except Exception as e:
         session.rollback()
         return jsonify({"error": str(e)}), 500
